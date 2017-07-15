@@ -1,0 +1,24 @@
+server:
+  port: 9090
+  connection-timeout: 10000
+kafka:
+  consumer:
+    tripstart:
+        bootstrap: ubuntu-lab:9092
+        group: TripStartListener
+        topic: tripstart
+    tripend:
+        bootstrap: ubuntu-lab:9092
+        group: TripEndListener
+        topic: tripend
+  producer:
+    tripstart:
+        bootstrap: ubuntu-lab:9092
+        topic: tripstart
+    tripend:
+        bootstrap: ubuntu-lab:9092
+        topic: tripend
+
+management:
+  security:
+    enabled: false
