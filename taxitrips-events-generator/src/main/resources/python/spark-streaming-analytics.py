@@ -2,6 +2,7 @@
 ** spark-submit command ** 
 spark-submit --packages org.apache.spark:spark-core_2.11:1.5.2,org.apache.spark:spark-streaming_2.11:1.5.2,org.apache.spark:spark-sql-kafka-0-10_2.11:2.1.0,org.apache.spark:spark-streaming-kafka_2.11:1.5.2,org.apache.kafka:kafka_2.11:0.11.0.0,org.apache.kafka:kafka-clients:0.11.0.0 D:\Rakesh\Projects\Github\taxi-trip-data-end-to-end\taxi-trips\src\main\resources\spark-streaming-analytics.py
 '''
+import argparse
 from datetime import datetime
 import json
 from pyspark.sql import SparkSession
@@ -13,11 +14,14 @@ from pyspark.streaming.kafka import KafkaUtils
 
 
 spark = SparkSession.builder.appName("StreamingSQL").getOrCreate()
+KAFKA_SERVERS = ""
+TRIPSTART_TOPIC = ""
+TRIPEND_TOPIC = ""
 
-def inittripstart():
+def inittripstart():    
     tripstartrows = spark.readStream.format("kafka")\
-        .option("kafka.bootstrap.servers", "ubuntu-lab:9092")\
-        .option("subscribe", "tripstart")\
+        .option("kafka.bootstrap.servers", KAFKA_SERVERS)\
+        .option("subscribe", TRIPSTART_TOPIC)\
         .option("startingOffsets", "latest")\
         .load()
 
@@ -54,8 +58,8 @@ def inittripstart():
 
 def inittripend():
     tripendrows = spark.readStream.format("kafka")\
-        .option("kafka.bootstrap.servers", "ubuntu-lab:9092")\
-        .option("subscribe", "tripend")\
+        .option("kafka.bootstrap.servers", KAFKA_SERVERS)\
+        .option("subscribe", TRIPEND_TOPIC)\
         .option("startingOffsets", "latest")\
         .load()
 
@@ -118,7 +122,7 @@ def continuousTimeWindowCount(rows, queryName):
 #     query = windowedCounts.select(to_json(struct("companyName", "window")).alias("key"), col("count").cast("string").alias("value")) \
 #                 .writeStream \
 #                 .format("kafka") \
-#                 .option("kafka.bootstrap.servers", "ubuntu-lab:9092")\
+#                 .option("kafka.bootstrap.servers", KAFKA_SERVERS)\
 #                 .option("topic", "trip-summary-stats") \
 #                 .option("checkpointLocation", "c:\\temp\\streaming\\checkpoint\\") \
 #                 .outputMode("complete") \
@@ -168,7 +172,28 @@ def processCompletedTrips(tripstartDF, tripendDF):
     
     return completedTripsDF
     
+def parseArguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--kafka_servers', default="ubuntu-lab:9092")
+    parser.add_argument('--tripstart_topic', default="tripstart")
+    parser.add_argument('--tripend_topic', default="tripend")
     
+    args = parser.parse_args()
+    print(args)
+    
+    global KAFKA_SERVERS
+    global TRIPSTART_TOPIC
+    global TRIPEND_TOPIC
+    
+    KAFKA_SERVERS = args.kafka_servers
+    TRIPSTART_TOPIC = args.tripstart_topic
+    TRIPEND_TOPIC = args.tripend_topic
+
+
+##################################################################################################################
+
+parseArguments()
+
 tripstartDF = inittripstart()
 tripendDF = inittripend()
 

@@ -23,32 +23,33 @@
 
 https://pythonprogramming.net/reading-csv-files-python-3/
 '''
-
+import argparse
 import csv
 from datetime import datetime, timedelta
 import random
-import sys
 from time import sleep
 import uuid
 
 import requests
 
-
 START_TIME_OFFSET = 3600
-HTTP_ENDPOINT = 'http://localhost:9090/tripend'
-file = "D:\\Rakesh\\Projects\\Github\\taxi-trip-data-end-to-end\\taxitrips-events-generator\\src\\main\\resources\\test-data-v2-aa.csv"
+HTTP_ENDPOINT = ""
+DATA_FILE = ""
+DELAY = 0
 
 def send_tripend_events():
     print("Using HTTP Endpoint: {}".format(HTTP_ENDPOINT))
+    print("Using Data File: {}".format(DATA_FILE))
+    print("Seconds Delay: {}".format(DELAY))
     
-    with open(file, 'r') as csvfile:
+    with open(DATA_FILE, 'r') as csvfile:
         readCSV = csv.reader(csvfile, delimiter=',')
-        next(readCSV) # skip the header row
+        next(readCSV)  # skip the header row
         for row in readCSV:
     #      print(row)
     #      print(row[0])
     #      print(row[0], row[1], row[2],)
-            sleep(0.8)  # Time in seconds.
+            sleep(DELAY)  # Time in seconds.
 #             print(START_TIME_OFFSET)
 #             print(row[3])
             secs = START_TIME_OFFSET + int(row[3])
@@ -58,13 +59,13 @@ def send_tripend_events():
             "tripSeconds":row[3],
             "tripEndTime": (datetime.now() - timedelta(seconds=secs)).isoformat(),
             "companyName":row[15],
-            "dropoffCensusTract":row[6],            
+            "dropoffCensusTract":row[6],
             "fare":row[9],
             "tips":row[10],
             "tolls":row[11],
             "extras":row[12],
             "tripTotal":row[13],
-            "paymentType":row[14],            
+            "paymentType":row[14],
             "dropoffCommunityArea":row[8],
             "dropoffCentroidLatitude":row[18],
             "dropoffCentroidLongitude":row[19],
@@ -74,7 +75,16 @@ def send_tripend_events():
 
 #     print(res.json())
 if __name__ == '__main__':
-    if (len(sys.argv) > 1):        
-        HTTP_ENDPOINT = sys.argv[1]
-        
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--endpoint', default='http://localhost:9090/tripend')
+    parser.add_argument('--datafile', default='..\\test-data-v2-aa.csv')
+    parser.add_argument('--delay', type=int, default=0)
+    
+    args = parser.parse_args()
+    print(args)
+
+    HTTP_ENDPOINT = args.endpoint
+    DATA_FILE = args.datafile
+    DELAY = args.delay
+    
     send_tripend_events()
