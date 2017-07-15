@@ -72,7 +72,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--endpoint', default='http://localhost:9090/tripend')
     parser.add_argument('--datafile', default='..\\test-data-v2-aa.csv')
-    parser.add_argument('--delay', type=int, default=0)
+    parser.add_argument('--delay', type=float, default=0)
     
     args = parser.parse_args()
     print(args)
