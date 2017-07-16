@@ -44,6 +44,7 @@ $ ./mvnw clean package
 ```
 ## Start The Application
 cd to the root folder (i.e. chicago-taxi-trips-streaming-analysis)
+**Note:** Make sure Kafka and ZooKeper and already running
 
 #### Start REST Services
 ```bash
@@ -58,7 +59,7 @@ java -jar taxitrips-kafka-sub/target/taxitrips-kafka-sub-0.0.1-SNAPSHOT.jar
 
 cd to `chicago-taxi-trips-streaming-analysis/taxitrips-events-generator/src/main/resources/python`
 
-Note:
+**Note:**
 * Replace <hostname> placeholder with your hostname
 * Use --datafile to provide mock data (available under resources folder)
 * Use --delay to specify seconds wait time between REST request submission
