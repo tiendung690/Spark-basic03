@@ -25,6 +25,7 @@ https://data.cityofchicago.org/Transportation/Taxi-Trips/wrvz-psew
 |pip|9.0.1|
 
 Installations tips:
+
 https://www.digitalocean.com/community/tutorials/how-to-install-apache-kafka-on-ubuntu-14-04
 https://gist.github.com/codspire/ee4a46ec054f962d9ef028b27fcb2635
 
@@ -132,4 +133,4 @@ only showing top 10 rows
 ```
 ## What's Next?
 1. The streaming results can be written to a persistent store (e.g. S3, HBase etc.) or ElasticSearch cluster which can be used to visualize the analytics in real-time.
-2. There are few limitations in Spark version 2.1.1 ([read here](https://www.mail-archive.com/commits@spark.apache.org/msg16135.html)). Another limitation is that there is no kafka format to write streaming datasets to Kafka (i.e. a Kafka sink) and it has to be handled using "foreach operator". The will probably be addressed in Spark 2.2 version ([read here](https://stackoverflow.com/questions/42996293/how-to-write-streaming-dataset-to-kafka))
+2. There are few limitations in Spark version 2.1.1 ([read here](https://www.mail-archive.com/commits@spark.apache.org/msg16135.html)). Another limitation is that there is no kafka format to write streaming datasets to Kafka (i.e. a Kafka sink) and it has to be handled using "foreach operator". This will probably be addressed in Spark 2.2 version ([read here](https://stackoverflow.com/questions/42996293/how-to-write-streaming-dataset-to-kafka)). It is in TODO to upgrade this app to Spark version 2.2 in near future.
