@@ -44,6 +44,7 @@ $ ./mvnw clean package
 ```
 ## Start The Application
 cd to the root folder (i.e. chicago-taxi-trips-streaming-analysis)
+
 **Note:** Make sure Kafka and ZooKeper and already running
 
 #### Start REST Services
