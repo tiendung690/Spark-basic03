@@ -2,6 +2,7 @@
 Sample application to showcase streaming data analytics with City Of Chicago Taxi Trips dataset using Spark Structured Streaming, Kafka and Spring Boot.
 
 Below is the basic architecture.
+
 ![](design.png)
 
 * The application exposes two REST endpoints to collect trip start and trip end events
