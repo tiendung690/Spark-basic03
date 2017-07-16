@@ -1,5 +1,3 @@
-[TOC]
-
 ## Overview
 This is a sample application to showcase streaming data analytics on the City Of Chicago Taxi Trips dataset using Spark Structured Streaming, Kafka and Spring Boot.
 
